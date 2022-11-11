@@ -21,57 +21,38 @@ function createGalLeryMarkup (galleryItems) {
     .join('');
 }
 
-newGallery.insertAdjacentHTML('beforeend', galleryMarkup);
+newGallery.insertAdjacentHTML('afterbegin', galleryMarkup);
 console.log(newGallery);
-
-const object = {
-	/*
-	 * Prevents the lightbox from closing when clicking its background.
-	 */
-	closable: true,
-	/*
-	 * One or more space separated classes to be added to the basicLightbox element.
-	 */
-	className: 'modal',
-	/*
-	 * Function that gets executed before the lightbox will be shown.
-	 * Returning false will prevent the lightbox from showing.
-	 */
-	onShow: (instance) => {},
-	/*
-	 * Function that gets executed before the lightbox closes.
-	 * Returning false will prevent the lightbox from closing.
-	 */
-	onClose: (instance) => {}
-};
-
-const instance = basicLightbox.create(`
-    <div class="modal">
-        <p>
-            Your first lightbox with just a few lines of code.
-            Yes, it's really that simple.
-        </p>
-    </div>
-`, object);
-
-newGallery.appendChild(instance);
-console.log(instance);
-
-const visible = instance.visible();
 
 function onNewGalleryClick (event) {
     event.preventDefault();
-    if (event.currentTarget.preview === event.target) {
-        instance.show();
-    } else {
-        instance.close();
+
+    if (event.target.nodeName !== 'IMG') {
+    return;
     }
-    
+
+    const instance = basicLightbox.create(`
+        <div class="modal">
+        <img
+        src="${event.target.dataset.source}" width="800" height="600" /> 
+        </div>`, {
+            onShow: instance => {
+                window.addEventListener('keydown', onEscPress);
+                instance.element().querySelector('img').onclick = instance.close;
+            },
+            onClose: instance => {
+                window.removeEventListener('keydown', onEscPress);
+            },
+            }
+        );
+        instance.show(); 
+
+    function onEscPress(event) {
+        if (event.code === 'Escape') {
+        instance.close();
+        }
+    } 
     
 }
 
-document.body.addEventListener('keypress', (event) => {
-    if (event.code === "Escape") {
-        instance.close();
-    } 
-})
+
