@@ -50,28 +50,15 @@ const object = {
 	onClose: (instance) => {}
 };
 
-const instance = basicLightbox.create(`
-    <div class="modal">
-        <p>
-            Your first lightbox with just a few lines of code.
-            Yes, it's really that simple.
-        </p>
-    </div>
-`, object);
-
-newGallery.appendChild(instance);
-console.log(instance);
-
-const visible = instance.visible();
-
 function onNewGalleryClick (event) {
     event.preventDefault();
+    const instance = basicLightbox.create(document.querySelector('.gallery__image'), object);
     if (event.currentTarget.preview === event.target) {
+        instance.original = event.currentTarget.dataset.source;
         instance.show();
-    } else {
+        } else {
         instance.close();
     }
-    
     
 }
 
