@@ -3,6 +3,9 @@ import { galleryItems } from './gallery-items.js';
 console.log(galleryItems);
 
 const newGallery = document.querySelector('.gallery');
+
+newGallery.addEventListener('click', onNewGalleryClick);
+
 const galleryMarkup = createGalLeryMarkup (galleryItems);
 
 function createGalLeryMarkup (galleryItems) {
@@ -22,17 +25,9 @@ function createGalLeryMarkup (galleryItems) {
     })
     .join('');
 }
+
 newGallery.insertAdjacentHTML('beforeend', galleryMarkup);
 console.log(newGallery);
-
-const instance = basicLightbox.create(`
-    <div class="modal">
-        <p>
-            Your first lightbox with just a few lines of code.
-            Yes, it's really that simple.
-        </p>
-    </div>
-`);
 
 const object = {
 	/*
@@ -53,17 +48,32 @@ const object = {
 	 * Returning false will prevent the lightbox from closing.
 	 */
 	onClose: (instance) => {}
-}
+};
 
-newGallery.addEventListener('click', onNewGalleryClick, object);
+const instance = basicLightbox.create(`
+    <div class="modal">
+        <p>
+            Your first lightbox with just a few lines of code.
+            Yes, it's really that simple.
+        </p>
+    </div>
+`, object);
+
+newGallery.appendChild(instance);
+console.log(instance);
+
+const visible = instance.visible();
+
 function onNewGalleryClick (event) {
-    console.log(evt.target.original);
     event.preventDefault();
+    if (event.currentTarget.preview === event.target) {
+        instance.show();
+    } else {
+        instance.close();
+    }
+    
     
 }
-
-instance.show();
-instance.close();
 
 document.body.addEventListener('keypress', (event) => {
     if (event.code === "Escape") {
