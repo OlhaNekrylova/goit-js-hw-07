@@ -24,35 +24,14 @@ function createGalLeryMarkup (galleryItems) {
 newGallery.insertAdjacentHTML('afterbegin', galleryMarkup);
 console.log(newGallery);
 
+const gallery = new SimpleLightbox('.gallery a', {captionsData: 'alt', captionDelay: 250,});
+gallery.on('show.simplelightbox', function () {
+	
+});
+
+gallery.next(); 
+
 function onNewGalleryClick (event) {
     event.preventDefault();
 
-    if (event.target.nodeName !== 'IMG') {
-    return;
-    }
-
-    const instance = basicLightbox.create(`
-        <div class="modal">
-        <img
-        src="${event.target.dataset.source}" width="800" height="600" /> 
-        </div>`, {
-            onShow: instance => {
-                window.addEventListener('keydown', onEscPress);
-                instance.element().querySelector('img').onclick = instance.close;
-            },
-            onClose: instance => {
-                window.removeEventListener('keydown', onEscPress);
-            },
-            }
-        );
-        instance.show(); 
-
-    function onEscPress(event) {
-        if (event.code === 'Escape') {
-        instance.close();
-        }
-    } 
-    
 }
-
-
