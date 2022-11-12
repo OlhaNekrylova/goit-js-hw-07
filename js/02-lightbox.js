@@ -24,7 +24,11 @@ function createGalLeryMarkup (galleryItems) {
 newGallery.insertAdjacentHTML('afterbegin', galleryMarkup);
 console.log(newGallery);
 
-const gallery = new SimpleLightbox('.gallery a', {captionsData: 'alt', captionDelay: 250,});
+const gallery = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt', 
+    captionDelay: 250,
+});
+
 gallery.on('show.simplelightbox', function () {
 	
 });
