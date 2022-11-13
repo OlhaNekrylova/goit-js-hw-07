@@ -33,8 +33,6 @@ gallery.on('show.simplelightbox', function () {
 	
 });
 
-gallery.next(); 
-
 function onNewGalleryClick (event) {
     event.preventDefault();
 
